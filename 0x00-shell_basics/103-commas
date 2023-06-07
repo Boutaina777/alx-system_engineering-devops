@@ -1,15 +1,2 @@
 #!/bin/bash
-
-# List files and directories in the current directory, separated by commas
-
-# Get the list of files and directories (including dot files) and sort them
-listing=$(ls -lan | awk '{print $9}' | sed 's/ /\\ /g' | sort -df)
-
-# Append slash to directories
-listing=$(echo "$listing" | sed '/^\.$/! s/$/\//')
-
-# Join the list with commas
-listing=$(echo "$listing" | paste -sd "," -)
-
-# Print the listing with a new line at the end
-echo "$listing"
+ls -a | awk -F/ '{if($NF=="." || $NF=="..") print $0; else if($NF ~ /^[[:alnum:]]/) printf "%s, ", $0; else printf "%s/, ", $0} END {print ""}'
